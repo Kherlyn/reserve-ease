@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PackageController;
@@ -38,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/reservations/{id}/decline', [AdminController::class, 'decline'])->name('admin.reservations.decline');
     Route::delete('/admin/reservations/{id}', [AdminController::class, 'destroy'])->name('admin.reservations.destroy');
     Route::get('/admin/analytics', [\App\Http\Controllers\AdminController::class, 'analytics'])->name('admin.analytics');
+    Route::get('/admin/users', [\App\Http\Controllers\UserManagementController::class, 'index'])->name('admin.users');
+    Route::patch('/admin/users/{id}', [\App\Http\Controllers\UserManagementController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{id}', [\App\Http\Controllers\UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+    Route::post('/admin/users/{id}/promote', [\App\Http\Controllers\UserManagementController::class, 'promote'])->name('admin.users.promote');
     Route::middleware('auth')->get('/api/user/reservations', [DashboardController::class, 'userReservations']);
     Route::middleware('auth')->get('/api/user/notifications', [DashboardController::class, 'notifications']);
 });
