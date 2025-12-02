@@ -10,6 +10,7 @@ import {
     Package,
     ChevronDown,
     Check,
+    User as UserIcon,
 } from "lucide-react";
 
 const eventTypes = [
@@ -71,6 +72,9 @@ export default function CreateReservationModal({ isOpen, onClose }) {
         guest_count: "",
         customization: "",
         total_amount: packages[0].price,
+        customer_full_name: "",
+        customer_address: "",
+        customer_contact_number: "",
     });
 
     const handleSubmit = (e) => {
@@ -151,6 +155,93 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                         {/* Left Column */}
                                         <div className="space-y-6">
+                                            {/* Customer Details */}
+                                            <div>
+                                                <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
+                                                    <Users className="w-5 h-5 mr-2 text-amber-600" />
+                                                    Customer Details
+                                                </h4>
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-slate-800 mb-2">
+                                                            Full Name
+                                                        </label>
+                                                        <div className="relative">
+                                                            <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                            <input
+                                                                type="text"
+                                                                value={data.customer_full_name}
+                                                                onChange={(e) =>
+                                                                    setData(
+                                                                        "customer_full_name",
+                                                                        e.target.value
+                                                                    )
+                                                                }
+                                                                placeholder="Enter full name (optional)"
+                                                                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                                                            />
+                                                        </div>
+                                                        {errors.customer_full_name && (
+                                                            <p className="mt-1 text-sm text-red-600">
+                                                                {errors.customer_full_name}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-slate-800 mb-2">
+                                                            Address *
+                                                        </label>
+                                                        <div className="relative">
+                                                            <MapPin className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
+                                                            <textarea
+                                                                value={data.customer_address}
+                                                                onChange={(e) =>
+                                                                    setData(
+                                                                        "customer_address",
+                                                                        e.target.value
+                                                                    )
+                                                                }
+                                                                placeholder="Enter your full address"
+                                                                rows={2}
+                                                                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors resize-none"
+                                                            />
+                                                        </div>
+                                                        {errors.customer_address && (
+                                                            <p className="mt-1 text-sm text-red-600">
+                                                                {errors.customer_address}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-slate-800 mb-2">
+                                                            Contact Number
+                                                        </label>
+                                                        <div className="relative">
+                                                            <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                                            <input
+                                                                type="text"
+                                                                value={data.customer_contact_number}
+                                                                onChange={(e) =>
+                                                                    setData(
+                                                                        "customer_contact_number",
+                                                                        e.target.value
+                                                                    )
+                                                                }
+                                                                placeholder="Enter contact number"
+                                                                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                                                            />
+                                                        </div>
+                                                        {errors.customer_contact_number && (
+                                                            <p className="mt-1 text-sm text-red-600">
+                                                                {errors.customer_contact_number}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="border-t border-slate-200 pt-6"></div>
+
                                             {/* Event Type */}
                                             <div>
                                                 <label className="block text-sm font-semibold text-slate-800 mb-3">
@@ -223,8 +314,8 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                                         </span>
                                                                                         <span
                                                                                             className={`block truncate ${selected
-                                                                                                    ? "font-semibold"
-                                                                                                    : "font-normal"
+                                                                                                ? "font-semibold"
+                                                                                                : "font-normal"
                                                                                                 }`}
                                                                                         >
                                                                                             {
@@ -421,8 +512,8 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                                         <div>
                                                                                             <span
                                                                                                 className={`block ${selected
-                                                                                                        ? "font-semibold"
-                                                                                                        : "font-normal"
+                                                                                                    ? "font-semibold"
+                                                                                                    : "font-normal"
                                                                                                     }`}
                                                                                             >
                                                                                                 {
@@ -470,9 +561,9 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                         <div
                                                             key={pkg.id}
                                                             className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${selectedPackage.id ===
-                                                                    pkg.id
-                                                                    ? "border-amber-500 bg-amber-50"
-                                                                    : "border-slate-200 hover:border-amber-300"
+                                                                pkg.id
+                                                                ? "border-amber-500 bg-amber-50"
+                                                                : "border-slate-200 hover:border-amber-300"
                                                                 }`}
                                                             onClick={() =>
                                                                 handlePackageChange(
@@ -610,10 +701,10 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                     </div>
                                 </form>
                             </Dialog.Panel>
-                        </Transition.Child>
-                    </div>
-                </div>
-            </Dialog>
-        </Transition>
+                        </Transition.Child >
+                    </div >
+                </div >
+            </Dialog >
+        </Transition >
     );
 }

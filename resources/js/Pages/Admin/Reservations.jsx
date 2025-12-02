@@ -183,7 +183,7 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                     <thead className="bg-blue-50">
                                         <tr>
                                             <th className="px-4 py-2 border-b text-left text-xs font-medium text-blue-700 uppercase">
-                                                User
+                                                Customer
                                             </th>
                                             <th className="px-4 py-2 border-b text-left text-xs font-medium text-blue-700 uppercase">
                                                 Event Type
@@ -219,16 +219,38 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                                     key={res.id}
                                                     className="hover:bg-blue-50"
                                                 >
-                                                    <td className="px-4 py-2 border-b flex items-center gap-2">
-                                                        <UserAvatar
-                                                            name={
-                                                                res.user?.name
-                                                            }
-                                                        />
-                                                        <span>
-                                                            {res.user?.name ||
-                                                                "Unknown"}
-                                                        </span>
+                                                    <td className="px-4 py-2 border-b">
+                                                        <div className="flex items-start gap-3">
+                                                            <UserAvatar
+                                                                name={
+                                                                    res.customer_full_name ||
+                                                                    res.user?.name
+                                                                }
+                                                            />
+                                                            <div>
+                                                                <div className="font-medium text-slate-900">
+                                                                    {res.customer_full_name ||
+                                                                        res.user?.name ||
+                                                                        "Unknown"}
+                                                                </div>
+                                                                {res.customer_address && (
+                                                                    <div className="text-xs text-slate-500 flex items-center mt-0.5">
+                                                                        <MapPin className="w-3 h-3 mr-1" />
+                                                                        {
+                                                                            res.customer_address
+                                                                        }
+                                                                    </div>
+                                                                )}
+                                                                {res.customer_contact_number && (
+                                                                    <div className="text-xs text-slate-500 flex items-center mt-0.5">
+                                                                        <UserIcon className="w-3 h-3 mr-1" />
+                                                                        {
+                                                                            res.customer_contact_number
+                                                                        }
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td className="px-4 py-2 border-b capitalize">
                                                         {res.event_type}
@@ -248,12 +270,11 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                                     <td className="px-4 py-2 border-b">
                                                         <div className="text-xs space-y-1">
                                                             <div
-                                                                className={`font-medium ${
-                                                                    res.payment_status ===
-                                                                    "Paid"
+                                                                className={`font-medium ${res.payment_status ===
+                                                                        "Paid"
                                                                         ? "text-green-600"
                                                                         : "text-yellow-600"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {res.payment_status ||
                                                                     "In Progress"}
@@ -261,7 +282,7 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                                             {res.payments &&
                                                                 res.payments
                                                                     .length >
-                                                                    0 &&
+                                                                0 &&
                                                                 res.payments[0]
                                                                     .payment_method && (
                                                                     <div className="text-gray-500 capitalize">
@@ -274,7 +295,7 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                                             {res.receipts &&
                                                                 res.receipts
                                                                     .length >
-                                                                    0 && (
+                                                                0 && (
                                                                     <div className="flex items-center gap-1 text-blue-600">
                                                                         <FileText className="w-3 h-3" />
                                                                         <a
@@ -347,16 +368,16 @@ export default function AdminReservations({ auth, reservations, flash }) {
                                                                 </option>
                                                                 {res.status ===
                                                                     "pending" && (
-                                                                    <option value="approve">
-                                                                        Approve
-                                                                    </option>
-                                                                )}
+                                                                        <option value="approve">
+                                                                            Approve
+                                                                        </option>
+                                                                    )}
                                                                 {res.status ===
                                                                     "pending" && (
-                                                                    <option value="decline">
-                                                                        Decline
-                                                                    </option>
-                                                                )}
+                                                                        <option value="decline">
+                                                                            Decline
+                                                                        </option>
+                                                                    )}
                                                                 <option value="delete">
                                                                     Delete
                                                                 </option>
