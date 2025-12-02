@@ -30,6 +30,7 @@ export default function Book({ package: packageData }) {
         venue: "",
         guest_count: "",
         customization_notes: "",
+        total_amount: packageData.base_price,
     });
 
     const handleSubmit = (e) => {
@@ -43,13 +44,33 @@ export default function Book({ package: packageData }) {
         const basePrice = parseFloat(packageData.base_price || 0);
 
         if (totalFoodCost > basePrice) {
-            // Don't submit if budget exceeded
+            alert(
+                `Total food cost (₱${totalFoodCost.toFixed(
+                    2
+                )}) exceeds package budget (₱${basePrice.toFixed(2)})`
+            );
             return;
         }
 
+        console.log("Submitting reservation data:", data);
+
         post(route("reservations.store"), {
             onSuccess: () => {
+                console.log("Reservation created successfully!");
                 router.visit(route("reservations.index"));
+            },
+            onError: (errors) => {
+                console.error(
+                    "Reservation creation failed with errors:",
+                    errors
+                );
+
+                // Display all validation errors
+                const errorMessages = Object.entries(errors)
+                    .map(([field, messages]) => `${field}: ${messages}`)
+                    .join("\n");
+
+                alert(`Failed to create reservation:\n\n${errorMessages}`);
             },
         });
     };

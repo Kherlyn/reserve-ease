@@ -63,6 +63,7 @@ export default function CreateReservationModal({ isOpen, onClose }) {
     const [selectedVenue, setSelectedVenue] = useState(venues[0]);
 
     const { data, setData, post, processing, errors, reset } = useForm({
+        package_id: packages[0].id,
         event_type: eventTypes[0].name,
         event_date: "",
         event_time: "",
@@ -89,7 +90,11 @@ export default function CreateReservationModal({ isOpen, onClose }) {
 
     const handlePackageChange = (pkg) => {
         setSelectedPackage(pkg);
-        setData("total_amount", pkg.price);
+        setData((data) => ({
+            ...data,
+            total_amount: pkg.price,
+            package_id: pkg.name === "Custom Package" ? null : pkg.id,
+        }));
     };
 
     return (
@@ -197,10 +202,9 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                             className={({
                                                                                 active,
                                                                             }) =>
-                                                                                `relative cursor-pointer select-none py-3 pl-4 pr-10 ${
-                                                                                    active
-                                                                                        ? "bg-amber-50 text-amber-900"
-                                                                                        : "text-slate-900"
+                                                                                `relative cursor-pointer select-none py-3 pl-4 pr-10 ${active
+                                                                                    ? "bg-amber-50 text-amber-900"
+                                                                                    : "text-slate-900"
                                                                                 }`
                                                                             }
                                                                             value={
@@ -218,11 +222,10 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                                             }
                                                                                         </span>
                                                                                         <span
-                                                                                            className={`block truncate ${
-                                                                                                selected
+                                                                                            className={`block truncate ${selected
                                                                                                     ? "font-semibold"
                                                                                                     : "font-normal"
-                                                                                            }`}
+                                                                                                }`}
                                                                                         >
                                                                                             {
                                                                                                 type.name
@@ -274,7 +277,7 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                             min={
                                                                 new Date(
                                                                     Date.now() +
-                                                                        86400000
+                                                                    86400000
                                                                 )
                                                                     .toISOString()
                                                                     .split(
@@ -400,10 +403,9 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                             className={({
                                                                                 active,
                                                                             }) =>
-                                                                                `relative cursor-pointer select-none py-3 pl-4 pr-10 ${
-                                                                                    active
-                                                                                        ? "bg-amber-50 text-amber-900"
-                                                                                        : "text-slate-900"
+                                                                                `relative cursor-pointer select-none py-3 pl-4 pr-10 ${active
+                                                                                    ? "bg-amber-50 text-amber-900"
+                                                                                    : "text-slate-900"
                                                                                 }`
                                                                             }
                                                                             value={
@@ -418,11 +420,10 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                                         <MapPin className="w-5 h-5 text-slate-400 mr-3" />
                                                                                         <div>
                                                                                             <span
-                                                                                                className={`block ${
-                                                                                                    selected
+                                                                                                className={`block ${selected
                                                                                                         ? "font-semibold"
                                                                                                         : "font-normal"
-                                                                                                }`}
+                                                                                                    }`}
                                                                                             >
                                                                                                 {
                                                                                                     venue.name
@@ -468,12 +469,11 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                     {packages.map((pkg) => (
                                                         <div
                                                             key={pkg.id}
-                                                            className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${
-                                                                selectedPackage.id ===
-                                                                pkg.id
+                                                            className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${selectedPackage.id ===
+                                                                    pkg.id
                                                                     ? "border-amber-500 bg-amber-50"
                                                                     : "border-slate-200 hover:border-amber-300"
-                                                            }`}
+                                                                }`}
                                                             onClick={() =>
                                                                 handlePackageChange(
                                                                     pkg
@@ -499,14 +499,14 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                                 <div className="text-right">
                                                                     <p className="text-lg font-bold text-slate-800">
                                                                         {pkg.price >
-                                                                        0
+                                                                            0
                                                                             ? `₱${Number(pkg.price).toLocaleString("en-PH", { minimumFractionDigits: 2 })}`
                                                                             : "Custom"}
                                                                     </p>
                                                                     {selectedPackage.id ===
                                                                         pkg.id && (
-                                                                        <Check className="w-5 h-5 text-amber-600 ml-auto mt-1" />
-                                                                    )}
+                                                                            <Check className="w-5 h-5 text-amber-600 ml-auto mt-1" />
+                                                                        )}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -528,13 +528,13 @@ export default function CreateReservationModal({ isOpen, onClose }) {
                                                     <span className="text-2xl font-bold text-amber-700">
                                                         {data.total_amount > 0
                                                             ? `₱${Number(
-                                                                  data.total_amount
-                                                              ).toLocaleString(
-                                                                  "en-PH",
-                                                                  {
-                                                                      minimumFractionDigits: 2,
-                                                                  }
-                                                              )}`
+                                                                data.total_amount
+                                                            ).toLocaleString(
+                                                                "en-PH",
+                                                                {
+                                                                    minimumFractionDigits: 2,
+                                                                }
+                                                            )}`
                                                             : "Custom Quote"}
                                                     </span>
                                                 </div>
